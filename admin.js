@@ -60,7 +60,7 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
     sessionStorage.setItem('neon_admin', '1');
     document.getElementById('adminLogin').style.display = 'none';
     document.getElementById('adminDashboard').style.display = 'flex';
-    loadAll();
+    try { loadAll(); } catch (e) { console.error(e); }
   } else {
     document.getElementById('loginError').textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة';
   }
@@ -73,13 +73,7 @@ document.getElementById('logoutBtn').addEventListener('click', (e) => {
   document.getElementById('adminDashboard').style.display = 'none';
 });
 
-if (checkAuth()) {
-  document.getElementById('adminLogin').style.display = 'none';
-  document.getElementById('adminDashboard').style.display = 'flex';
-  loadAll();
-}
-
-// ===== NAVIGATION =====
+// ===== NAVIGATION (attached BEFORE checkAuth to prevent sidebar from breaking if render fails) =====
 document.querySelectorAll('.sidebar-link[data-page]').forEach(link => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
@@ -100,6 +94,12 @@ document.querySelectorAll('.sidebar-link[data-page]').forEach(link => {
     if (page === 'ads') renderAdsForm();
   });
 });
+
+if (checkAuth()) {
+  document.getElementById('adminLogin').style.display = 'none';
+  document.getElementById('adminDashboard').style.display = 'flex';
+  try { loadAll(); } catch (e) { console.error(e); }
+}
 
 // ===== PRODUCTS =====
 function renderProducts() {
@@ -586,8 +586,8 @@ function renderAdsForm() {
         <textarea class="ad-code" data-slot="${s.id}" rows="4" style="padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:monospace;font-size:0.85rem;outline:none;resize:vertical;direction:ltr;width:100%;margin-top:8px" placeholder="الصق كود الإعلان هنا (HTML/JS)">${ad.code || ''}</textarea>
       </div>
     `;
-  }).join('<button class="btn-admin-primary" id="saveAdsBtn" style="margin-top:12px"><i class="fas fa-save"></i> حفظ الإعلانات</button>');
-  document.getElementById('saveAdsBtn')?.addEventListener('click', saveAds);
+  }).join('') + '<button class="btn-admin-primary" id="saveAdsBtn" style="margin-top:12px"><i class="fas fa-save"></i> حفظ الإعلانات</button>';
+  document.getElementById('saveAdsBtn').addEventListener('click', saveAds);
   container.querySelectorAll('.ad-toggle').forEach(toggle => {
     toggle.addEventListener('change', () => {
       const slot = toggle.dataset.slot;
