@@ -88,6 +88,12 @@ document.querySelectorAll('.sidebar-link[data-page]').forEach(link => {
     document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + link.dataset.page).classList.add('active');
     const page = link.dataset.page;
+    if (page === 'dashboard') loadDashboard();
+    if (page === 'products') renderProducts();
+    if (page === 'orders') renderOrders();
+    if (page === 'deposits') renderDeposits();
+    if (page === 'wallets') renderWallets();
+    if (page === 'users') renderUsers();
     if (page === 'content') loadContentForm();
     if (page === 'events') renderEvents();
     if (page === 'messages') renderMessages();
@@ -249,7 +255,7 @@ function approveDeposit(id) {
   d.status = 'approved';
   DB.deposits.set(deposits);
   const wAll = DB.wallets.get();
-  const wallet = wAll.find(x => x.userId === d.userId);
+  let wallet = wAll.find(x => x.userId === d.userId);
   if (!wallet) { wallet = { userId: d.userId, balance: 0 }; wAll.push(wallet); }
   wallet.balance += d.amount;
   DB.wallets.set(wAll);
@@ -312,7 +318,7 @@ document.getElementById('creditForm').addEventListener('submit', (e) => {
   const amount = +document.getElementById('creditAmount').value;
   if (!amount || amount < 1) return;
   const wAll = DB.wallets.get();
-  const wallet = wAll.find(x => x.userId === userId);
+  let wallet = wAll.find(x => x.userId === userId);
   if (!wallet) { wallet = { userId, balance: 0 }; wAll.push(wallet); }
   wallet.balance += amount;
   DB.wallets.set(wAll);
