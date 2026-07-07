@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dola store | دولا ستور</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+</head>
+<body>
+
+  <!-- HEADER / NAVBAR -->
+  <header class="header">
+    <div class="container header-content">
+      <a href="index.html" class="logo">
+        <i class="fas fa-shield-halved logo-shield"></i>
+        <span class="logo-text">Dola</span><span class="logo-light"> store</span>
+      </a>
+      <nav class="nav">
+        <a href="#products" class="nav-link">المنتجات</a>
+        <a href="#about" class="nav-link">عن المتجر</a>
+        <a href="#contact" class="nav-link">اتصل بنا</a>
+      </nav>
+      <div class="header-actions">
+        <div id="userMenu"></div>
+        <button class="cart-btn" id="cartBtn" aria-label="عربة التسوق">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="hero">
+    <div class="container hero-content">
+      <div class="hero-text">
+        <div class="trust-badge" id="heroBadge"><i class="fas fa-shield-check"></i> <span id="heroBadgeText">متجر موثوق ومعتمد</span></div>
+        <h1 class="hero-title">
+          <span class="white-text" id="heroTitle1">شحن ألعاب</span>
+          <span class="accent-text" id="heroTitle2">بثقة وأمان</span>
+        </h1>
+        <p class="hero-desc" id="heroDesc">أسرع وأرخص خدمة شحن لـ PUBG Mobile و Free Fire. تعبئة فورية، دعم متواصل، وأسعار تنافسية.</p>
+        <div class="hero-btns">
+          <a href="#products" class="btn btn-primary">تسوق الآن <i class="fas fa-arrow-left"></i></a>
+          <a href="#about" class="btn btn-outline">اعرف أكثر</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <i class="fas fa-shield-halved hero-card-icon"></i>
+          <div class="trust-badge" style="margin-bottom:12px;display:inline-flex"><i class="fas fa-shield-check"></i> <span id="heroCardBadge">مدفوعات آمنة</span></div>
+          <h3 id="heroCardTitle">شحن فوري - توصيل تلقائي</h3>
+          <p id="heroCardDesc">احصل على رصيدك فور إتمام الدفع. دعم فني متواصل.</p>
+          <span class="price-tag" id="heroCardPrice">أسعار تبدأ من 65 جنيه</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS BAR -->
+  <div class="events-bar" id="eventsBar"></div>
+
+  <!-- AD SLOT 1 -->
+  <div class="ad-slot" id="ad-slot-1"></div>
+
+  <!-- PRODUCTS SECTION -->
+  <section class="products" id="products">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">المنتجات</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+  </section>
+
+  <!-- AD SLOT 2 -->
+  <div class="ad-slot" id="ad-slot-2"></div>
+
+  <!-- ABOUT SECTION -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" id="aboutTitle">عن المتجر</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="about-content" id="aboutContent"></div>
+    </div>
+  </section>
+
+  <!-- AD SLOT 3 -->
+  <div class="ad-slot" id="ad-slot-3"></div>
+
+  <!-- CONTACT SECTION -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" id="contactTitle">اتصل بنا</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="contact-content">
+        <div class="contact-info" id="contactInfo"></div>
+        <form class="contact-form" id="contactForm">
+          <input type="text" id="contactName" placeholder="الاسم" required />
+          <input type="email" id="contactEmail" placeholder="البريد الإلكتروني" required />
+          <textarea id="contactMessage" placeholder="رسالتك" rows="4" required></textarea>
+          <button type="submit" class="btn btn-primary">إرسال <i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- AD SLOT 4 -->
+  <div class="ad-slot" id="ad-slot-4"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <p id="footerText">جميع الحقوق محفوظة &copy; 2026 Dola store</p>
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-tiktok"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CART SIDEBAR -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h2>سلة التسوق</h2>
+      <button class="cart-close" id="cartClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <p class="cart-empty">السلة فارغة <i class="fas fa-shopping-bag"></i></p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>المجموع:</span>
+        <span id="cartTotal">0 جنيه</span>
+      </div>
+      <button class="btn btn-primary checkout-btn" id="checkoutBtn">متابعة الشراء</button>
+    </div>
+  </aside>
+
+  <!-- CHECKOUT SUCCESS MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+      <div class="modal-body">
+        <i class="fas fa-check-circle modal-icon"></i>
+        <h2>تم تأكيد الطلب!</h2>
+        <p>شكراً لاختيارك Dola store. سيتم تعبئة رصيدك فوراً. تواصل مع الدعم في حال وجود استفسار.</p>
+        <button class="btn btn-primary" id="modalDone">حسناً</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELIVERY METHOD MODAL -->
+  <div class="modal-overlay modal-overlay-close" id="deliveryModal">
+    <div class="modal modal-wide">
+      <h2 style="margin-bottom:8px">طريقة الشحن</h2>
+      <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:20px">اختر طريقة استلام الشحن وأدخل البيانات المطلوبة</p>
+      <form id="deliveryForm">
+        <div class="delivery-options">
+          <label class="delivery-option">
+            <input type="radio" name="deliveryType" value="id" checked />
+            <div class="delivery-option-content">
+              <i class="fas fa-hashtag"></i>
+              <div><strong>شحن عن طريق ID</strong><span>أدخل ID اللاعب</span></div>
+            </div>
+          </label>
+          <label class="delivery-option">
+            <input type="radio" name="deliveryType" value="account" />
+            <div class="delivery-option-content">
+              <i class="fas fa-user-circle"></i>
+              <div><strong>شحن عن طريق الأكونت</strong><span>أدخل بيانات الحساب</span></div>
+            </div>
+          </label>
+        </div>
+        <input type="text" id="deliveryValue" class="delivery-input" placeholder="أدخل ID اللاعب أو بيانات الأكونت" required />
+        <div class="delivery-summary">
+          <span>المبلغ: <strong id="deliveryTotal">0</strong></span>
+          <span>رصيدك: <strong id="deliveryWallet">0</strong></span>
+        </div>
+        <div class="delivery-actions">
+          <button type="button" class="btn btn-outline" id="deliveryCancel">إلغاء</button>
+          <button type="submit" class="btn btn-primary">تأكيد الطلب</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- RECHARGE MODAL -->
+  <div class="modal-overlay modal-overlay-close" id="rechargeModal">
+    <div class="modal">
+      <button class="modal-close modal-close-btn"><i class="fas fa-times"></i></button>
+      <h2 style="margin-bottom:8px">تعبئة رصيد</h2>
+      <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:16px">حول المبلغ على أحد الأرقام التالية</p>
+      <div id="transferNumbers" class="transfer-list"></div>
+      <form id="rechargeForm" class="recharge-form">
+        <input type="number" id="rechargeAmount" placeholder="المبلغ (جنيه)" min="1" required />
+        <input type="text" id="rechargeTransfer" placeholder="رقم التحويل الذي حولت عليه" required />
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">إرسال طلب التعبئة</button>
+      </form>
+      <p id="rechargeInfo" style="color:var(--text-muted);font-size:0.8rem;margin-top:12px;text-align:center"></p>
+    </div>
+  </div>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay modal-overlay-close" id="authModal">
+    <div class="modal">
+      <button class="modal-close modal-close-btn"><i class="fas fa-times"></i></button>
+      <h2 id="authTitle">تسجيل الدخول</h2>
+      <form id="authForm" class="auth-form">
+        <div id="authNameGroup">
+          <input type="text" id="authName" placeholder="الاسم كامل" />
+        </div>
+        <input type="email" id="authEmail" placeholder="البريد الإلكتروني" required />
+        <input type="password" id="authPass" placeholder="كلمة المرور" required />
+        <button type="submit" class="btn btn-primary" id="authSubmit" style="width:100%;justify-content:center">دخول</button>
+        <p class="auth-toggle" id="authToggle"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ORDERS MODAL -->
+  <div class="modal-overlay modal-overlay-close" id="ordersModal">
+    <div class="modal modal-wide">
+      <button class="modal-close modal-close-btn"><i class="fas fa-times"></i></button>
+      <h2>طلباتي</h2>
+      <div id="ordersList"></div>
+    </div>
+  </div>
+
+  <!-- PROFILE MODAL -->
+  <div class="modal-overlay modal-overlay-close" id="profileModal">
+    <div class="modal">
+      <button class="modal-close modal-close-btn"><i class="fas fa-times"></i></button>
+      <h2>حسابي</h2>
+      <form id="profileForm" class="auth-form">
+        <input type="text" id="profileName" placeholder="الاسم" required />
+        <input type="email" id="profileEmail" placeholder="البريد الإلكتروني" disabled style="opacity:0.6" />
+        <input type="password" id="profilePass" placeholder="كلمة المرور الجديدة (اختياري)" />
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">حفظ التغييرات</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
