@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة التحكم | Dola store</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div class="admin-login" id="adminLogin">
+    <div class="login-box">
+      <div class="login-logo">
+        <span class="logo-text" style="font-size:2rem">Dola</span><span class="logo-light" style="font-size:2rem"> store</span>
+        <p>لوحة التحكم</p>
+      </div>
+      <form id="loginForm" class="login-form">
+        <input type="text" id="loginUser" placeholder="اسم المستخدم" required />
+        <input type="password" id="loginPass" placeholder="كلمة المرور" required />
+        <button type="submit" class="btn-admin-primary">دخول <i class="fas fa-arrow-left"></i></button>
+        <p class="login-error" id="loginError"></p>
+      </form>
+      <a href="index.html" class="login-back"><i class="fas fa-arrow-right"></i> العودة للمتجر</a>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="admin-dashboard" id="adminDashboard" style="display:none">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <span class="logo-text" style="font-size:1.3rem;font-weight:800">Dola</span><span class="logo-light"> admin</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active" data-page="dashboard"><i class="fas fa-chart-pie"></i> الإحصائيات</a>
+        <a href="#" class="sidebar-link" data-page="products"><i class="fas fa-box"></i> المنتجات</a>
+        <a href="#" class="sidebar-link" data-page="orders"><i class="fas fa-truck"></i> الطلبات</a>
+        <a href="#" class="sidebar-link" data-page="deposits"><i class="fas fa-arrow-down"></i> الإيداعات</a>
+        <a href="#" class="sidebar-link" data-page="wallets"><i class="fas fa-wallet"></i> المحافظ</a>
+        <a href="#" class="sidebar-link" data-page="users"><i class="fas fa-users"></i> المستخدمين</a>
+        <a href="#" class="sidebar-link" data-page="messages"><i class="fas fa-envelope"></i> الرسائل <span class="msg-badge" id="msgBadge"></span></a>
+        <a href="#" class="sidebar-link" data-page="ads"><i class="fas fa-bullhorn"></i> الإعلانات</a>
+        <a href="#" class="sidebar-link" data-page="content"><i class="fas fa-edit"></i> محتوى الموقع</a>
+        <a href="#" class="sidebar-link" data-page="events"><i class="fas fa-calendar"></i> الفعاليات</a>
+        <a href="#" class="sidebar-link" data-page="settings"><i class="fas fa-cog"></i> الإعدادات</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="index.html" class="sidebar-link"><i class="fas fa-store"></i> المتجر</a>
+        <a href="#" id="logoutBtn" class="sidebar-link logout-link"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <!-- PAGE: DASHBOARD -->
+      <div class="admin-page active" id="page-dashboard">
+        <h1 class="page-title">الإحصائيات</h1>
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card">
+            <i class="fas fa-dollar-sign stat-icon" style="color:var(--green)"></i>
+            <div class="stat-info"><span class="stat-num" id="statRevenue">0</span><span>جنيه</span></div>
+            <p>إجمالي المبيعات</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-shopping-bag stat-icon" style="color:var(--primary)"></i>
+            <div class="stat-info"><span class="stat-num" id="statOrders">0</span></div>
+            <p>إجمالي الطلبات</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-box stat-icon" style="color:var(--accent)"></i>
+            <div class="stat-info"><span class="stat-num" id="statProducts">0</span></div>
+            <p>المنتجات</p>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-users stat-icon" style="color:var(--primary-light)"></i>
+            <div class="stat-info"><span class="stat-num" id="statUsers">0</span></div>
+            <p>المستخدمين</p>
+          </div>
+        </div>
+        <div class="recent-orders">
+          <h2>آخر الطلبات</h2>
+          <div id="recentOrdersList"></div>
+        </div>
+      </div>
+
+      <!-- PAGE: PRODUCTS -->
+      <div class="admin-page" id="page-products">
+        <div class="page-header">
+          <h1 class="page-title">المنتجات</h1>
+          <button class="btn-admin-primary" id="addProductBtn"><i class="fas fa-plus"></i> إضافة منتج</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="productsTable">
+            <thead><tr><th>المنتج</th><th>السعر</th><th>الظهور</th><th>الإجراءات</th></tr></thead>
+            <tbody id="productsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAGE: ORDERS -->
+      <div class="admin-page" id="page-orders">
+        <h1 class="page-title">الطلبات</h1>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="ordersTable">
+            <thead><tr><th>#</th><th>العميل</th><th>المنتجات</th><th>طريقة الشحن</th><th>المجموع</th><th>التاريخ</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+            <tbody id="ordersBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAGE: DEPOSITS -->
+      <div class="admin-page" id="page-deposits">
+        <h1 class="page-title">طلبات الإيداع</h1>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="depositsTable">
+            <thead><tr><th>#</th><th>المستخدم</th><th>المبلغ</th><th>رقم التحويل</th><th>التاريخ</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+            <tbody id="depositsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAGE: WALLETS -->
+      <div class="admin-page" id="page-wallets">
+        <h1 class="page-title">المحافظ</h1>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="walletsTable">
+            <thead><tr><th>المستخدم</th><th>البريد</th><th>الرصيد</th><th>الإجراءات</th></tr></thead>
+            <tbody id="walletsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAGE: USERS -->
+      <div class="admin-page" id="page-users">
+        <h1 class="page-title">المستخدمين</h1>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="usersTable">
+            <thead><tr><th>#</th><th>الاسم</th><th>البريد</th><th>تاريخ التسجيل</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+            <tbody id="usersBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAGE: CONTENT -->
+      <div class="admin-page" id="page-content">
+        <h1 class="page-title">محتوى الموقع</h1>
+        <div class="settings-form">
+          <div class="setting-group"><label>عنوان الهيدر (الجزء الأول)</label><input type="text" id="cntHeroTitle1" /></div>
+          <div class="setting-group"><label>عنوان الهيدر (الجزء الثاني)</label><input type="text" id="cntHeroTitle2" /></div>
+          <div class="setting-group"><label>شعار الثقة</label><input type="text" id="cntHeroBadge" /></div>
+          <div class="setting-group"><label>وصف الهيدر</label><textarea id="cntHeroDesc" rows="3" style="padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;font-size:0.95rem;outline:none;resize:vertical"></textarea></div>
+          <div class="setting-group"><label>شعار البطاقة</label><input type="text" id="cntHeroCardBadge" /></div>
+          <div class="setting-group"><label>عنوان البطاقة</label><input type="text" id="cntHeroCardTitle" /></div>
+          <div class="setting-group"><label>وصف البطاقة</label><input type="text" id="cntHeroCardDesc" /></div>
+          <div class="setting-group"><label>سعر البطاقة</label><input type="text" id="cntHeroCardPrice" /></div>
+          <div class="setting-group"><label>عنوان قسم "عن المتجر"</label><input type="text" id="cntAboutTitle" /></div>
+          <div class="setting-group"><label>عنوان قسم "اتصل بنا"</label><input type="text" id="cntContactTitle" /></div>
+          <div class="setting-group"><label>العنوان</label><input type="text" id="cntContactAddress" /></div>
+          <div class="setting-group"><label>رقم الهاتف</label><input type="text" id="cntContactPhone" /></div>
+          <div class="setting-group"><label>البريد الإلكتروني</label><input type="text" id="cntContactEmail" /></div>
+          <div class="setting-group"><label>نص الفوتر</label><input type="text" id="cntFooterText" /></div>
+          <div class="setting-group"><label>بطاقات "عن المتجر" (JSON: [{icon,title,desc}])</label><textarea id="cntFeatures" rows="5" style="padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:monospace;font-size:0.85rem;outline:none;resize:vertical;direction:ltr"></textarea></div>
+          <button class="btn-admin-primary" id="saveContent">حفظ محتوى الموقع</button>
+        </div>
+      </div>
+
+      <!-- PAGE: EVENTS -->
+      <div class="admin-page" id="page-events">
+        <div class="page-header">
+          <h1 class="page-title">الفعاليات</h1>
+          <button class="btn-admin-primary" id="addEventBtn"><i class="fas fa-plus"></i> إضافة فعالية</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>العنوان</th><th>الوصف</th><th>اللون</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+            <tbody id="eventsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAGE: MESSAGES -->
+      <div class="admin-page" id="page-messages">
+        <h1 class="page-title">الرسائل</h1>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>#</th><th>الاسم</th><th>البريد</th><th>الرسالة</th><th>التاريخ</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+            <tbody id="messagesBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAGE: ADS -->
+      <div class="admin-page" id="page-ads">
+        <h1 class="page-title">الإعلانات</h1>
+        <p style="color:var(--text-secondary);margin-bottom:20px">الصق كود الإعلان (Google AdSense أو أي شبكة إعلانات) وفعّل المساحة المطلوبة.</p>
+        <div class="settings-form" id="adsForm"></div>
+      </div>
+
+      <!-- PAGE: SETTINGS -->
+      <div class="admin-page" id="page-settings">
+        <h1 class="page-title">الإعدادات</h1>
+        <div class="settings-form">
+          <div class="setting-group">
+            <label>اسم المتجر</label>
+            <input type="text" id="setSiteName" />
+          </div>
+          <div class="setting-group">
+            <label>تكلفة الشحن (جنيه)</label>
+            <input type="number" id="setShipping" />
+          </div>
+          <div class="setting-group">
+            <label>رقم التحويل (لكل سطر رقم حساب واسم بنك)</label>
+            <textarea id="setTransferNumbers" rows="4" style="padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;font-size:0.95rem;outline:none;resize:vertical" placeholder="01012345678 - البنك الأهلي&#10;01098765432 - بنك مصر"></textarea>
+          </div>
+          <div class="setting-group">
+            <label>كلمة مرور المشرف</label>
+            <input type="password" id="setAdminPass" placeholder="اتركه فارغاً إذا لا تريد التغيير" />
+          </div>
+          <button class="btn-admin-primary" id="saveSettings">حفظ الإعدادات</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- PRODUCT EDIT/CREATE MODAL -->
+  <div class="admin-modal-overlay" id="productModal">
+    <div class="admin-modal">
+      <button class="admin-modal-close" id="productModalClose"><i class="fas fa-times"></i></button>
+      <h2 id="productModalTitle">إضافة منتج</h2>
+      <form id="productForm" class="product-form">
+        <input type="hidden" id="prodId" />
+        <input type="text" id="prodName" placeholder="اسم المنتج" required />
+        <textarea id="prodDesc" placeholder="وصف المنتج" rows="3" required></textarea>
+        <input type="number" id="prodPrice" placeholder="السعر (جنيه)" required />
+        <input type="text" id="prodIcon" placeholder="أيقونة FontAwesome (مثال: fa-crosshairs)" required />
+        <button type="submit" class="btn-admin-primary" id="prodSubmit">حفظ</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADD CREDIT MODAL -->
+  <div class="admin-modal-overlay" id="creditModal">
+    <div class="admin-modal">
+      <button class="admin-modal-close" id="creditModalClose"><i class="fas fa-times"></i></button>
+      <h2>إضافة رصيد</h2>
+      <form id="creditForm" class="product-form">
+        <input type="hidden" id="creditUserId" />
+        <p id="creditUserName" style="color:var(--text-secondary)"></p>
+        <input type="number" id="creditAmount" placeholder="المبلغ (جنيه)" min="1" required />
+        <button type="submit" class="btn-admin-primary">إضافة الرصيد</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- EVENT MODAL -->
+  <div class="admin-modal-overlay" id="eventModal">
+    <div class="admin-modal">
+      <button class="admin-modal-close" id="eventModalClose"><i class="fas fa-times"></i></button>
+      <h2 id="eventModalTitle">إضافة فعالية</h2>
+      <form id="eventForm" class="product-form">
+        <input type="hidden" id="evtId" />
+        <input type="text" id="evtTitle" placeholder="عنوان الفعالية" required />
+        <input type="text" id="evtDesc" placeholder="وصف الفعالية" />
+        <input type="text" id="evtIcon" placeholder="أيقونة (مثال: fa-sun)" value="fa-star" />
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="color" id="evtColor" value="#2563eb" style="flex:0 0 50px;height:44px;padding:4px;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer" />
+          <input type="text" id="evtColorText" placeholder="#2563eb" value="#2563eb" style="direction:ltr;font-family:monospace" />
+        </div>
+        <button type="submit" class="btn-admin-primary" id="eventSubmit">حفظ</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
