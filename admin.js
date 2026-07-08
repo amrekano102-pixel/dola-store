@@ -675,6 +675,7 @@ function loadAll() {
 }
 
 setTimeout(async () => {
+  await fbPushAll();
   await fbPullAll();
   if (checkAuth()) loadAll();
   fbListenAll((col) => {
