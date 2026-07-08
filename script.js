@@ -281,7 +281,6 @@ function updateUserUI() {
           <a href="#" id="myOrdersBtn"><i class="fas fa-box"></i> طلباتي</a>
           <a href="#" id="profileBtn"><i class="fas fa-user-cog"></i> حسابي</a>
           <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</a>
-          <a href="admin.html" class="admin-link"><i class="fas fa-crown"></i> لوحة التحكم</a>
         </div>
       </div>`;
     document.getElementById('authBtn')?.remove();
