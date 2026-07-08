@@ -38,6 +38,8 @@ const DB = {
   settings: { get() { return DB.get('settings', { siteName: 'Dola store', shipping: 25, adminPass: 'admin', transferNumbers: ['01012345678 - البنك الأهلي', '01098765432 - بنك مصر'] }); }, set(v) { DB.set('settings', v); } },
 };
 
+DB.set = DBwrap(DB.set);
+
 function getWallet(userId) {
   const wallets = DB.wallets.get();
   let w = wallets.find(x => x.userId === userId);
@@ -671,3 +673,21 @@ function loadAll() {
   renderMessages();
   renderAdsForm();
 }
+
+setTimeout(async () => {
+  await fbPullAll();
+  if (checkAuth()) loadAll();
+  fbListenAll((col) => {
+    if (!checkAuth()) return;
+    if (col === 'users') { renderUsers(); renderWallets(); }
+    else if (col === 'orders') { renderOrders(); loadDashboard(); }
+    else if (col === 'deposits') { renderDeposits(); }
+    else if (col === 'products') { renderProducts(); }
+    else if (col === 'wallets') { renderWallets(); }
+    else if (col === 'contacts') { renderMessages(); }
+    else if (col === 'events') { renderEvents(); }
+    else if (col === 'ads') { renderAdsForm(); }
+    else if (col === 'content') { loadContentForm(); }
+    else if (col === 'settings') { loadSettings(); }
+  });
+}, 0);
