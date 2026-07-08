@@ -502,8 +502,8 @@ setTimeout(async () => {
   renderEvents();
   renderProducts();
   updateUserUI();
-  fbListen('wallets', () => { if (currentUser) updateUserUI(); });
-  fbListen('users', () => {
+  fbPoll('wallets', () => { if (currentUser) updateUserUI(); });
+  fbPoll('users', () => {
     if (currentUser) {
       const users = DB.users.get();
       const u = users.find(x => x.id === currentUser.id);
