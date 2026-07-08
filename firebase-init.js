@@ -14,10 +14,12 @@ const FIRESTORE_DB = firebase.firestore();
 const FB_COLLECTIONS = ['users','wallets','deposits','orders','products','content','events','contacts','ads','settings'];
 
 async function fbSync(key) {
-  const raw = localStorage.getItem('neon_' + key);
-  if (raw !== null) {
-    await FIRESTORE_DB.collection('neon_data').doc(key).set({ items: JSON.parse(raw) });
-  }
+  try {
+    const raw = localStorage.getItem('neon_' + key);
+    if (raw !== null) {
+      await FIRESTORE_DB.collection('neon_data').doc(key).set({ items: JSON.parse(raw) });
+    }
+  } catch (e) {}
 }
 
 async function fbPushAll() {
@@ -36,25 +38,30 @@ async function fbPullAll() {
   await Promise.all(promises);
 }
 
-function fbListen(key, fn) {
-  return FIRESTORE_DB.collection('neon_data').doc(key).onSnapshot(snap => {
-    if (!snap.exists) return;
-    const server = JSON.stringify(snap.data().items);
-    const local = localStorage.getItem('neon_' + key);
-    if (server !== local) {
-      localStorage.setItem('neon_' + key, server);
-      if (fn) fn();
-    }
-  });
+function fbPoll(key, fn, ms) {
+  ms = ms || 3000;
+  const id = setInterval(async () => {
+    try {
+      const snap = await FIRESTORE_DB.collection('neon_data').doc(key).get();
+      if (!snap.exists) return;
+      const server = JSON.stringify(snap.data().items);
+      const local = localStorage.getItem('neon_' + key);
+      if (server !== local) {
+        localStorage.setItem('neon_' + key, server);
+        if (fn) fn();
+      }
+    } catch (e) {}
+  }, ms);
+  return id;
 }
 
-function fbListenAll(fn) {
-  return FB_COLLECTIONS.map(key => fbListen(key, () => { if (fn) fn(key); }));
+function fbPollAll(fn) {
+  FB_COLLECTIONS.forEach(key => fbPoll(key, () => { if (fn) fn(key); }));
 }
 
 function DBwrap(origSet) {
   return function(key, val) {
     origSet(key, val);
-    fbSync(key);
+    fbSync(key).catch(() => {});
   };
 }
