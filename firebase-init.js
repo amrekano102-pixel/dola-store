@@ -13,12 +13,15 @@ const FIRESTORE_DB = firebase.firestore();
 
 const FB_COLLECTIONS = ['users','wallets','deposits','orders','products','content','events','contacts','ads','settings'];
 
-function fbSync(key) {
+async function fbSync(key) {
   const raw = localStorage.getItem('neon_' + key);
   if (raw !== null) {
-    FIRESTORE_DB.collection('neon_data').doc(key).set({ items: JSON.parse(raw) })
-      .catch(() => {});
+    await FIRESTORE_DB.collection('neon_data').doc(key).set({ items: JSON.parse(raw) });
   }
+}
+
+async function fbPushAll() {
+  await Promise.all(FB_COLLECTIONS.map(key => fbSync(key)));
 }
 
 async function fbPullAll() {
