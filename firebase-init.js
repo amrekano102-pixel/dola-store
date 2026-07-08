@@ -17,9 +17,11 @@ async function fbSync(key) {
   try {
     const raw = localStorage.getItem('neon_' + key);
     if (raw !== null) {
-      await FIRESTORE_DB.collection('neon_data').doc(key).set({ items: JSON.parse(raw) });
+      const data = JSON.parse(raw);
+      if (Array.isArray(data) && data.length === 0) return;
+      await FIRESTORE_DB.collection('neon_data').doc(key).set({ items: data });
     }
-  } catch (e) {}
+  } catch (e) { console.error('fbSync error', key, e); }
 }
 
 async function fbPushAll() {
@@ -33,7 +35,7 @@ async function fbPullAll() {
       if (snap.exists) {
         localStorage.setItem('neon_' + key, JSON.stringify(snap.data().items));
       }
-    } catch (e) {}
+    } catch (e) { console.error('fbPullAll error', key, e); }
   });
   await Promise.all(promises);
 }
@@ -50,7 +52,7 @@ function fbPoll(key, fn, ms) {
         localStorage.setItem('neon_' + key, server);
         if (fn) fn();
       }
-    } catch (e) {}
+    } catch (e) { console.error('fbPoll error', key, e); }
   }, ms);
   return id;
 }
@@ -62,6 +64,6 @@ function fbPollAll(fn) {
 function DBwrap(origSet) {
   return function(key, val) {
     origSet(key, val);
-    fbSync(key).catch(() => {});
+    fbSync(key).catch(e => console.error('DBwrap fbSync error', key, e));
   };
 }
