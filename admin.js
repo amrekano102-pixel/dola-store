@@ -678,7 +678,7 @@ setTimeout(async () => {
   await fbPushAll();
   await fbPullAll();
   if (checkAuth()) loadAll();
-  fbListenAll((col) => {
+  fbPollAll((col) => {
     if (!checkAuth()) return;
     if (col === 'users') { renderUsers(); renderWallets(); }
     else if (col === 'orders') { renderOrders(); loadDashboard(); }
