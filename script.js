@@ -495,8 +495,8 @@ renderProducts();
 updateUserUI();
 
 setTimeout(async () => {
-  await fbPushAll();
   await fbPullAll();
+  await fbPushAll();
   renderSiteContent();
   renderAds();
   renderEvents();
